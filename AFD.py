@@ -22,9 +22,10 @@ class AFD:
 
     def agregarEstadoInicial(self, estadoInicial):
         estadoInicialLimpio = self.procesar_string(estadoInicial)
-        if estadoInicial not in self.estadosAFD:
-            raise Exception(f"El estado inicial '{estadoInicial}' no pertenece a los estados del AFD")
-        self.estadoInicial = estadoInicialLimpio;    
+        if (estadoInicialLimpio):
+            if estadoInicial not in self.estadosAFD:
+                raise Exception(f"El estado inicial '{estadoInicial}' no pertenece a los estados del AFD")
+            self.estadoInicial = estadoInicial;    
 
     def agregarEstadoLot(self, listaEstadosComas):
             if (self.procesar_string(listaEstadosComas)):
@@ -57,6 +58,8 @@ class AFD:
                 raise Exception(f"El simbolo '{simbolo}' no pertenece al alfabeto")
             if destino not in self.estadosAFD:
                 raise Exception(f"El estado destino '{destino}' no pertenece a los estados")
+            if (origen, simbolo) in self.transicionesAFD.keys():
+                raise Exception(f"La transicion estado origen '{origen}' → simbolo '{simbolo}' ya estaban registrados")
             self.transicionesAFD[(origen, simbolo)] = destino
             print("La transicion fue agregada exitosamente")
 
@@ -66,4 +69,7 @@ class AFD:
         validarSimboloVacio = self.procesar_string(simbolo)
         if (validarSimboloVacio and validarEstadoVacio):
             return self.transicionesAFD.get((estado, simbolo))
+
+    def marcarValidez(self, esValido):
+        self.esAFDValido = esValido
                          
