@@ -1,5 +1,5 @@
 class validacionAFD:
-    def validar_afd(self, afd):
+    def validarAfd(self, afd):
         errores = []
         resultado = False
         
