@@ -67,7 +67,7 @@ class CargaArchivo:
                 f"No se encontró el archivo en la ruta '{rutaArchivo}'."
             )
 
-        return self.parsearArchivo(CargaArchivo, lineas)
+        return self.parsearArchivo(lineas)
 
     def parsearArchivo(self, lineas):
         """
@@ -122,7 +122,7 @@ class CargaArchivo:
             except Exception as error:
                 raise Exception(f"Error en línea {numeroLinea}: {error}")
 
-        return self._construirAFD(CargaArchivo, datosClaveValor, transicionesPendientes)
+        return self._construirAFD(datosClaveValor, transicionesPendientes)
 
     def _construirAFD(self, datos, transiciones):
         """
@@ -135,14 +135,18 @@ class CargaArchivo:
             if claveRequerida not in datos:
                 raise Exception(f"Falta la clave obligatoria '{claveRequerida}' en el archivo")
 
-        afd = AFD(datos["NOMBRE"])
+        try:
+            afd = AFD
+            afd.agregarIdAFD(datos["NOMBRE"])
+            afd.agregarEstadoLot(datos["ESTADOS"])
+            afd.agregarAlfabeto(datos["ALFABETO"])
+            afd.agregarEstadoInicial(datos["INICIAL"])
+            afd.agregarEstadosFinales(datos["FINALES"])
 
-        afd.agregarEstadoLot(datos["ESTADOS"])
-        afd.agregarAlfabeto(datos["ALFABETO"])
-        afd.agregarEstadoInicial(datos["INICIAL"])
-        afd.agregarEstadosFinales(datos["FINALES"])
+            for origen, simbolo, destino in transiciones:
+                afd.agregarTransicion(origen, simbolo, destino)
+            return afd
+        except Exception as error:
+            raise Exception(f"Error de carga del archivo: {error}")
 
-        for origen, simbolo, destino in transiciones:
-            afd.agregarTransicion(origen, simbolo, destino)
-
-        return afd
+        

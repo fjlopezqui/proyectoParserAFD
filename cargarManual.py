@@ -1,8 +1,8 @@
 from AFD import AFD
 
 class cargarManual:    
-    def __init__(self, idAFD):
-        self.AFD = AFD(idAFD)
+    def __init__(self):
+        self.AFD = AFD()
 
     def agregarEstadosAFD(self):
         listaEstados = input(f"Ingrese la lista de estados para el AFD '{self.AFD.idAFD}' (debe estar separada en comas): ")
@@ -44,6 +44,15 @@ class cargarManual:
             print(error)
             return False
 
+    def agregarID(self):
+            nuevoID = input(f"Ingrese el id del AFD '{self.AFD.idAFD}': ")
+            try:
+                self.AFD.agregarIdAFD(nuevoID)
+                return True
+            except Exception as error:
+                print(error)
+                return False
+
     def agregarEstadosFinales(self):
         listaEstadosFinales = input(f"Ingrese la lista de estados finalaes para el AFD '{self.AFD.idAFD}' (debe estar separada en comas): ")
         try:
@@ -66,25 +75,28 @@ class cargarManual:
 
 
     def crearAFDManual(self):
-        idAFD = self.AFD.idAFD
-        print(f"==== CREAR AFD {idAFD} ====")
-        print("1. AGREGAR ALFABETO DEL AUTOMATA FINITO")
+        print(f"==== CREAR AFD MANUAL ====")
+        print("1. AGREGAR ID/NOMBRE AL AUTOMATA FINITO")
+        while True:
+            validarSalida = self.agregarID()
+            if validarSalida: break         
+        print("2. AGREGAR ALFABETO DEL AUTOMATA FINITO")
         while True:
             validarSalida = self.agregarAlfabeto()
             if validarSalida: break 
-        print("2. AGREGAR ESTADOS DEL AUTOMATA FINITO")
+        print("3. AGREGAR ESTADOS DEL AUTOMATA FINITO")
         while True:
             validarSalida = self.agregarEstadosAFD()
             if validarSalida: break
-        print("3. AGREGAR ESTADO INCIAL DEL AUTOMATA FINITO")
+        print("4. AGREGAR ESTADO INCIAL DEL AUTOMATA FINITO")
         while True:
             validarSalida = self.agregarEstadoInicial()
             if validarSalida: break
-        print("4. AGREGAR ESTADO FINAL DEL AUTOMATA FINITO")
+        print("5. AGREGAR ESTADO FINAL DEL AUTOMATA FINITO")
         while True:
             validarSalida = self.agregarEstadosFinales()
             if validarSalida: break
-        print("5. AGREGAR FUNCIONES DE TRANSICION DEL AUTOMATA FINITO")
+        print("6. AGREGAR FUNCIONES DE TRANSICION DEL AUTOMATA FINITO")
         self.agregarTransicionesAFD()
         return self.AFD
 

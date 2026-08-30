@@ -1,11 +1,24 @@
-from AFD import AFD
 from cargaArchivo import CargaArchivo
+from validacionAFD import validacionAFD
 
-ruta = CargaArchivo.seleccionarArchivo(CargaArchivo);
-afd = CargaArchivo.cargarArchivo(CargaArchivo, ruta)
-print(afd.idAFD)
-print(afd.alfabetoAFD)
-print(afd.estadosAFD)
-print(afd.estadoInicial)
-print(afd.estadosFinales)
-print(afd.transicionesAFD)
+
+ 
+cargador = CargaArchivo()
+try:
+	ruta = cargador.seleccionarArchivo()
+except Exception as error:
+	print(error)
+try:	
+	afd = cargador.cargarArchivo(ruta)
+	afd.mostrarDefinicion()
+except Exception as error:
+	print(error)
+
+try:
+	validar = validacionAFD()
+	(resultado, errores) = validar.validar_afd(afd)
+	print(errores)
+	print(resultado)
+	afd.mostraTablTransiciones()
+except Exception as error:
+	print(error)
